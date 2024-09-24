@@ -15,9 +15,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  TmdbHelper tmdb = TmdbHelper.instance;
   bool isLoading = true;
-  List<dynamic> favorite = ToFavorite.favorites; // Store movie details as favorites
+  TmdbHelper tmdb = TmdbHelper.instance;
 
   @override
   void initState() {
@@ -28,15 +27,13 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> loadMovies() async {
     await TmdbHelper.instance.loadMovies();
     setState(() {
-      isLoading = false; // Update loading status after data is loaded
+      isLoading = false; // Update loading state once movies are fetched
     });
   }
 
-  // Function to add/remove a movie from the favorites
- 
-
+  // Check if a movie is favorited
   bool isFavorite(String movieName) {
-    return favorite.any((movie) => movie['name'] == movieName,);
+    return ToFavorite.favorites.any((movie) => movie['name'] == movieName);
   }
 
   @override
@@ -53,13 +50,10 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           InkWell(
             onTap: () {
-              
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const FavoritesScreen(
-                    
-                  ),
+                  builder: (context) => const FavoritesScreen(),
                 ),
               );
             },
@@ -79,26 +73,22 @@ class _HomeScreenState extends State<HomeScreen> {
                 TvMovies(
                   text: 'Popular TV Shows',
                   movie: tmdb.tvModel.results, // Use model's parsed data
-
-                  toggleFavorite: ToFavorite.addToFavorite, 
-                  isFavorite: isFavorite, // Pass function to check if favorite
+                  toggleFavorite: ToFavorite.addToFavorite,
+                  isFavorite: isFavorite,
                 ),
                 const SizedBox(height: 10),
                 TopRated(
                   text: 'Top Rated Movies',
                   movie: tmdb.topRatedModel.results,
-                  toggleFavorite: ToFavorite.addToFavorite, 
-                  isFavorite: isFavorite, 
+                  toggleFavorite: ToFavorite.addToFavorite,
+                  isFavorite: isFavorite,
                 ),
                 const SizedBox(height: 10),
                 TrendingMovies(
                   text: 'Trending Movies',
                   movie: tmdb.trendingModel.results, // Use model's parsed data
-                  // posterPath: 'poster_path',
-                  // backdropPath: 'backdrop_path',
-                  // title: 'title',
-                  toggleFavorite: ToFavorite.addToFavorite, 
-                  isFavorite: isFavorite, // Pass function to check if favorite
+                  toggleFavorite: ToFavorite.addToFavorite,
+                  isFavorite: isFavorite,
                 ),
               ],
             ),
