@@ -8,16 +8,10 @@ class TvMovies extends StatelessWidget {
     super.key,
     required this.movie,
     required this.text,
-    required this.toggleFavorite,
-    required this.isFavorite,
   });
 
   final List<ResultTv>? movie;
   final String text;
-
-  final Function(Map<String, dynamic>) toggleFavorite;
-  final bool Function(String)
-      isFavorite; // Checks if the movie is a favorite by its name
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +45,7 @@ class TvMovies extends StatelessWidget {
                       final moviePosterUrl = movie![index].posterPath != null
                           ? 'https://image.tmdb.org/t/p/w500${movie![index].posterPath}'
                           : '';
-                      final isMovieFavorite = isFavorite(movieTitle);
+                      // final isMovieFavorite = appCubit.isFavorite(movieTitle);
 
                       return GestureDetector(
                         onTap: () {
@@ -69,22 +63,20 @@ class TvMovies extends StatelessWidget {
                                     'N/A',
                                 launchOn:
                                     movie![index].firstAirDate ?? 'Unknown',
-                                toggleFavorite: toggleFavorite,
-                                isFavorite: isMovieFavorite,
                               ),
                             ),
                           );
                         },
                         child: SizedBox(
-                          width: 200,
+                          width: 240,
                           child: Column(
                             children: [
                               Stack(
                                 children: [
                                   Container(
                                     margin: const EdgeInsets.all(10),
-                                    height:
-                                        200, // Adjusted height for image display
+                                    height: 200,
+                                    width: 300,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(
                                           10), // Rounded corners
@@ -99,7 +91,7 @@ class TvMovies extends StatelessWidget {
                                   //   right: 10,
                                   //   top: 10,
                                   //   child: IconButton(
-                                  //     onPressed: () => toggleFavorite({
+                                  //     onPressed: () => appCubit.addToFavorite({
                                   //       'name': movieTitle,
                                   //       'posterUrl': moviePosterUrl,
                                   //       'description': movie![index].overview ??
@@ -119,6 +111,8 @@ class TvMovies extends StatelessWidget {
                               ),
                               const SizedBox(height: 5),
                               ModefiedText(
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
                                 text: movieTitle,
                                 size: 16,
                                 color: Colors.white,

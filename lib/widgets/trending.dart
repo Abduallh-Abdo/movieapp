@@ -1,24 +1,19 @@
 import 'package:flutter/material.dart';
+
 import 'package:movieapp/models/trending_model/result.dart';
 import 'package:movieapp/utils/text.dart';
 import 'package:movieapp/views/description/description_screen.dart';
 
 // ignore: must_be_immutable
 class TrendingMovies extends StatelessWidget {
-   TrendingMovies({
+  TrendingMovies({
     super.key,
     required this.movie,
     required this.text,
-    required this.toggleFavorite, // Function to toggle favorites
-    required this.isFavorite, // Function to check if the movie is a favorite
   });
 
-   List<Result>? movie;
+  List<Result>? movie;
   final String text;
-
-  final Function(Map<String, dynamic>) toggleFavorite;
-  final bool Function(String)
-      isFavorite; // Checks if the movie is a favorite by its name
 
   @override
   Widget build(BuildContext context) {
@@ -49,13 +44,14 @@ class TrendingMovies extends StatelessWidget {
                     itemCount: movie!.length,
                     itemBuilder: (context, index) {
                       final movieTitle = movie![index].title ?? 'Loading';
-                      final moviePosterUrl = movie![index].posterPath != null
+                      final moviePosterUrl = movie![index].posterPath !=
+                              null
                           ? 'https://image.tmdb.org/t/p/w500${movie![index].posterPath}'
                           : '';
-
+    
                       // Check if this movie is already in favorites
-                      final isMovieFavorite = isFavorite(movieTitle);
-
+                      // final isMovieFavorite = isFavorite(movieTitle);
+    
                       return GestureDetector(
                         onTap: () {
                           Navigator.push(
@@ -72,9 +68,7 @@ class TrendingMovies extends StatelessWidget {
                                     movie![index].voteAverage?.toString() ??
                                         'N/A',
                                 launchOn:
-                                    movie![index].releaseDate?? 'Unknown',
-                                toggleFavorite: toggleFavorite,
-                                isFavorite: isMovieFavorite,
+                                    movie![index].releaseDate ?? 'Unknown',
                               ),
                             ),
                           );

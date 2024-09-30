@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:movieapp/models/top_rated_model/result.dart';
 import 'package:movieapp/utils/text.dart';
 import 'package:movieapp/views/description/description_screen.dart';
@@ -8,16 +9,10 @@ class TopRated extends StatelessWidget {
     super.key,
     required this.movie,
     required this.text,
-    required this.toggleFavorite, // Function to toggle favorites
-    required this.isFavorite, // Function to check if the movie is a favorite
   });
 
   final List<ResultToRated>? movie;
   final String text;
-
-  final Function(Map<String, dynamic>) toggleFavorite;
-  final bool Function(String)
-      isFavorite; // Checks if the movie is a favorite by its name
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +48,7 @@ class TopRated extends StatelessWidget {
                           : '';
 
                       // Check if this movie is already in favorites
-                      final isMovieFavorite = isFavorite(movieTitle);
+                      // final isMovieFavorite = isFavorite(movieTitle);
 
                       return GestureDetector(
                         onTap: () {
@@ -71,8 +66,6 @@ class TopRated extends StatelessWidget {
                                     'N/A',
                                 launchOn:
                                     movie![index].releaseDate ?? 'Unknown',
-                                toggleFavorite: toggleFavorite,
-                                isFavorite: isMovieFavorite,
                               ),
                             ),
                           );

@@ -1,5 +1,4 @@
 import 'dart:developer';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:movieapp/helper/constans/end_points.dart';
 import 'package:movieapp/helper/sqflite/sqflite_db.dart';
 import 'package:movieapp/models/top_rated_model/top_rated_model.dart';
@@ -29,7 +28,7 @@ class TmdbHelper {
       Map<String, dynamic> trendingResult = await tmdbWithCustomLogs.v3.trending
           .getTrending() as Map<String, dynamic>;
       trendingModel = TrendingModel.fromJson(trendingResult);
-      log('Trending: ${trendingModel.results?.length} movies loaded.');
+      // log('Trending: ${trendingModel.results?.length} movies loaded.');
     } catch (e) {
       log('Error loading trending movies: $e');
     }
@@ -39,7 +38,7 @@ class TmdbHelper {
       Map<String, dynamic> tvResult =
           await tmdbWithCustomLogs.v3.tv.getPopular() as Map<String, dynamic>;
       tvModel = TvModel.fromJson(tvResult);
-      log('TV Shows: ${tvModel.results?.length} shows loaded.');
+      // log('TV Shows: ${tvModel.results?.length} shows loaded.');
     } catch (e) {
       log('Error loading TV shows: $e');
     }
@@ -49,7 +48,7 @@ class TmdbHelper {
       Map<String, dynamic> topRatedResult = await tmdbWithCustomLogs.v3.movies
           .getTopRated() as Map<String, dynamic>;
       topRatedModel = TopRatedModel.fromJson(topRatedResult);
-      log('Top Rated: ${topRatedModel.results?.length} movies loaded.');
+      // log('Top Rated: ${topRatedModel.results?.length} movies loaded.');
     } catch (e) {
       log('Error loading top-rated movies: $e');
     }
@@ -83,8 +82,6 @@ class TmdbHelper {
       );
     }
   }
-  Future<bool> checkInternetConnection() async {
-    var connectivityResult = await Connectivity().checkConnectivity();
-    return connectivityResult == ConnectivityResult.mobile || connectivityResult == ConnectivityResult.wifi;
-  }
+
+ 
 }
