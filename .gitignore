@@ -30,7 +30,7 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 /build/
-lib/helper/constans/end_points.dart
+end_points.dart
 
 # Symbolication related
 app.*.symbols
