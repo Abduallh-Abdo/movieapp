@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:movieapp/app_cubit/app_cubit.dart';
 import 'package:movieapp/views/home_screen/home_screen.dart';
-import 'package:movieapp/views/offline.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,6 +16,7 @@ class MovieApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => AppCubit()..loadMovies(),
+      // ..loadGeners(),
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,
         //ConnectionCheckScreen()

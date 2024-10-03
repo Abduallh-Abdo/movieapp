@@ -11,6 +11,8 @@ class DescriptionScreen extends StatelessWidget {
   final String posterUrl;
   final String vote;
   final String launchOn;
+  final List<dynamic>? genreIds;
+  final bool isTvShow; // To differentiate between Movie and TV Show
 
   const DescriptionScreen({
     super.key,
@@ -20,6 +22,8 @@ class DescriptionScreen extends StatelessWidget {
     required this.posterUrl,
     required this.vote,
     required this.launchOn,
+    required this.genreIds,
+    required this.isTvShow, // Pass whether it's a TV show
   });
 
   @override
@@ -28,6 +32,12 @@ class DescriptionScreen extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         AppCubit appCubit = AppCubit.get(context);
+
+        // Determine whether to use Movie genres or TV genres
+        List<String> genreList = isTvShow
+            ? appCubit.getTvGenreNames(genreIds)
+            : appCubit.getMovieGenreNames(genreIds);
+
         return Scaffold(
           backgroundColor: Colors.black,
           body: ListView(
@@ -36,17 +46,20 @@ class DescriptionScreen extends StatelessWidget {
               bannerUrl.isNotEmpty
                   ? Stack(
                       children: [
-                        Image.network(
-                          bannerUrl,
-                          width: MediaQuery.of(context).size.width,
-                          height: 250,
-                          fit: BoxFit.cover,
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 10.0),
+                          child: Image.network(
+                            bannerUrl,
+                            width: MediaQuery.of(context).size.width,
+                            height: 250,
+                            fit: BoxFit.cover,
+                          ),
                         ),
                         Positioned(
                           bottom: 10,
                           left: 10,
                           child: ModefiedText(
-                            text: '⭐ Average Rating - $vote',
+                            text: '⭐ Average Rating - ${vote.substring(0, 3)}',
                             size: 18,
                             color: Colors.white,
                           ),
@@ -103,6 +116,33 @@ class DescriptionScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
 
+              // Genres
+              if (genreList.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Wrap(
+                    spacing: 8.0, // Space between each genre tag
+                    children: genreList
+                        .where((genre) => genre
+                            .trim()
+                            .isNotEmpty) // Filter out empty or blank values
+                        .map((genre) {
+                      return Chip(
+                        elevation: 5,
+                        label: Text(
+                          genre,
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                        side: const BorderSide(style: BorderStyle.none),
+                        backgroundColor:
+                            Colors.black87, // Genre background color
+                      );
+                    }).toList(),
+                  ),
+                ),
+
+              const SizedBox(height: 20),
+
               // Release Date
               ModefiedText(
                 text: 'Release Date: $launchOn',
@@ -112,28 +152,15 @@ class DescriptionScreen extends StatelessWidget {
               const SizedBox(height: 30),
 
               // Poster Image and Description
-              Row(
-                children: [
-                  posterUrl.isNotEmpty
-                      ? Image.network(
-                          posterUrl,
-                          height: 250,
-                        )
-                      : Container(
-                          height: 250,
-                          color: Colors.grey, // Fallback for missing poster
-                        ),
-                  Flexible(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ModefiedText(
-                        text: description,
-                        size: 16,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                ],
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ModefiedText(
+                  maxLines: 8,
+                  overflow: TextOverflow.ellipsis,
+                  text: description,
+                  size: 16,
+                  color: Colors.white,
+                ),
               ),
             ],
           ),

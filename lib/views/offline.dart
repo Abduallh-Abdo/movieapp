@@ -49,7 +49,9 @@ class _OfflineState extends State<Offline> {
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : offlineData.isEmpty
-              ? const Center(child: Text('No data available', style: TextStyle(color: Colors.white)))
+              ? const Center(
+                  child: Text('No data available',
+                      style: TextStyle(color: Colors.white)))
               : ListView.builder(
                   itemCount: offlineData.length,
                   itemBuilder: (context, index) {
@@ -64,9 +66,13 @@ class _OfflineState extends State<Offline> {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               image: DecorationImage(
-                                image: movie['image'] != null && movie['image'].isNotEmpty
-                                    ? CachedNetworkImageProvider('https://image.tmdb.org/t/p/w500${movie['image']}')
-                                    : const AssetImage('assets/images/placeholder.png') as ImageProvider,
+                                image: movie['image'] != null &&
+                                        movie['image'].isNotEmpty
+                                    ? CachedNetworkImageProvider(
+                                        'https://image.tmdb.org/t/p/w500${movie['image']}')
+                                    : const AssetImage(
+                                            'assets/images/placeholder.png')
+                                        as ImageProvider,
                                 fit: BoxFit.cover,
                               ),
                             ),
@@ -79,7 +85,8 @@ class _OfflineState extends State<Offline> {
                           ),
                           const SizedBox(height: 5),
                           ModefiedText(
-                            text: movie['description'] ?? 'No description available',
+                            text: movie['description'] ??
+                                'No description available',
                             size: 14,
                             color: Colors.grey,
                             maxLines: 2,

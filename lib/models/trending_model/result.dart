@@ -1,4 +1,3 @@
-
 class Result {
   String? backdropPath;
   int? id;
@@ -51,5 +50,4 @@ class Result {
         voteAverage: (json['vote_average'] as num?)?.toDouble(),
         voteCount: json['vote_count'] as int?,
       );
-
 }

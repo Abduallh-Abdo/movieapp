@@ -6,6 +6,8 @@ class AppCheckConnectionState extends AppStates {}
 
 class AppLoadMoviesState extends AppStates {}
 
+class AppLoadGenersState extends AppStates {}
+
 class AppToggleFavoriteState extends AppStates {}
 
 class AppAddFavoriteState extends AppStates {}

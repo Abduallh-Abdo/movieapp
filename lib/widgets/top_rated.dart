@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 
 import 'package:movieapp/models/top_rated_model/result.dart';
@@ -8,10 +9,12 @@ class TopRated extends StatelessWidget {
   const TopRated({
     super.key,
     required this.movie,
-    required this.text,
+    required this.onTap,
+    required this.text, // Add onTap callback    required this.text,
   });
 
   final List<ResultToRated>? movie;
+  final Function(ResultToRated) onTap;
   final String text;
 
   @override
@@ -42,7 +45,7 @@ class TopRated extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     itemCount: movie!.length,
                     itemBuilder: (context, index) {
-                      final movieTitle = movie![index].title ?? 'Loading';
+                      final movieTitle = movie![index].title ?? 'Loading ⏳';
                       final moviePosterUrl = movie![index].posterPath != null
                           ? 'https://image.tmdb.org/t/p/w500${movie![index].posterPath}'
                           : '';
@@ -51,25 +54,27 @@ class TopRated extends StatelessWidget {
                       // final isMovieFavorite = isFavorite(movieTitle);
 
                       return GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => DescriptionScreen(
-                                name: movieTitle,
-                                description: movie![index].overview ??
-                                    'No description available',
-                                bannerUrl:
-                                    'https://image.tmdb.org/t/p/w500${movie![index].backdropPath}',
-                                posterUrl: moviePosterUrl,
-                                vote: movie![index].voteAverage?.toString() ??
-                                    'N/A',
-                                launchOn:
-                                    movie![index].releaseDate ?? 'Unknown',
-                              ),
-                            ),
-                          );
-                        },
+                         onTap: () => onTap(movie![index]),
+                        // onTap: () {
+                        //   Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //       builder: (context) => DescriptionScreen(
+                        //         name: movieTitle,
+                        //         description: movie![index].overview ??
+                        //             'No description available',
+                        //         bannerUrl:
+                        //             'https://image.tmdb.org/t/p/w500${movie![index].backdropPath}',
+                        //         posterUrl: moviePosterUrl,
+                        //         vote: movie![index].voteAverage?.toString() ??
+                        //             'N/A',
+                        //         launchOn:
+                        //             movie![index].releaseDate ?? 'Unknown',
+                        //         genreIds: movie![index].genreIds,
+                        //       ),
+                        //     ),
+                        //   );
+                        // },
                         child: SizedBox(
                           width: 200,
                           child: Column(

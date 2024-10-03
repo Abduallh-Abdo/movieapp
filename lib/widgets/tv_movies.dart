@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:movieapp/models/tv_model/result.dart';
 import 'package:movieapp/utils/text.dart';
-import 'package:movieapp/views/description/description_screen.dart';
 
 class TvMovies extends StatelessWidget {
   const TvMovies({
     super.key,
     required this.movie,
     required this.text,
+    required this.onTap, // Add onTap callback
   });
 
   final List<ResultTv>? movie;
   final String text;
+  final Function(ResultTv) onTap; // Callback that accepts the selected movie
 
   @override
   Widget build(BuildContext context) {
@@ -41,32 +42,13 @@ class TvMovies extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     itemCount: movie!.length,
                     itemBuilder: (context, index) {
-                      final movieTitle = movie![index].name ?? 'Loading';
+                      final movieTitle = movie![index].name ?? 'Loading ⏳';
                       final moviePosterUrl = movie![index].posterPath != null
                           ? 'https://image.tmdb.org/t/p/w500${movie![index].posterPath}'
                           : '';
-                      // final isMovieFavorite = appCubit.isFavorite(movieTitle);
 
                       return GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => DescriptionScreen(
-                                name: movieTitle,
-                                description: movie![index].overview ??
-                                    'No description available',
-                                bannerUrl:
-                                    'https://image.tmdb.org/t/p/w500${movie![index].backdropPath}',
-                                posterUrl: moviePosterUrl,
-                                vote: movie![index].voteAverage?.toString() ??
-                                    'N/A',
-                                launchOn:
-                                    movie![index].firstAirDate ?? 'Unknown',
-                              ),
-                            ),
-                          );
-                        },
+                        onTap: () => onTap(movie![index]), // Trigger onTap callback
                         child: SizedBox(
                           width: 240,
                           child: Column(
@@ -78,35 +60,13 @@ class TvMovies extends StatelessWidget {
                                     height: 200,
                                     width: 300,
                                     decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(
-                                          10), // Rounded corners
+                                      borderRadius: BorderRadius.circular(10), // Rounded corners
                                       image: DecorationImage(
                                         image: NetworkImage(moviePosterUrl),
                                         fit: BoxFit.cover,
                                       ),
                                     ),
                                   ),
-                                  // Favorite Icon in the top right corner of the movie card
-                                  // Positioned(
-                                  //   right: 10,
-                                  //   top: 10,
-                                  //   child: IconButton(
-                                  //     onPressed: () => appCubit.addToFavorite({
-                                  //       'name': movieTitle,
-                                  //       'posterUrl': moviePosterUrl,
-                                  //       'description': movie![index].overview ??
-                                  //           'No description available',
-                                  //     }),
-                                  //     icon: Icon(
-                                  //       isMovieFavorite
-                                  //           ? Icons.favorite
-                                  //           : Icons.favorite_border,
-                                  //       color: isMovieFavorite
-                                  //           ? Colors.red
-                                  //           : Colors.white,
-                                  //     ),
-                                  //   ),
-                                  // ),
                                 ],
                               ),
                               const SizedBox(height: 5),

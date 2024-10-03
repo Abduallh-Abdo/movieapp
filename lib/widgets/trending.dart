@@ -9,10 +9,12 @@ class TrendingMovies extends StatelessWidget {
   TrendingMovies({
     super.key,
     required this.movie,
+    required this.onTap,
     required this.text,
   });
 
   List<Result>? movie;
+  final Function(Result) onTap;
   final String text;
 
   @override
@@ -43,36 +45,36 @@ class TrendingMovies extends StatelessWidget {
                     scrollDirection: Axis.horizontal,
                     itemCount: movie!.length,
                     itemBuilder: (context, index) {
-                      final movieTitle = movie![index].title ?? 'Loading';
-                      final moviePosterUrl = movie![index].posterPath !=
-                              null
+                      final movieTitle = movie![index].title ?? 'Loading ⏳';
+                      final moviePosterUrl = movie![index].posterPath != null
                           ? 'https://image.tmdb.org/t/p/w500${movie![index].posterPath}'
                           : '';
-    
+
                       // Check if this movie is already in favorites
                       // final isMovieFavorite = isFavorite(movieTitle);
-    
+
                       return GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => DescriptionScreen(
-                                name: movieTitle,
-                                description: movie![index].overview ??
-                                    'No description available',
-                                bannerUrl:
-                                    'https://image.tmdb.org/t/p/w500${movie![index].backdropPath}',
-                                posterUrl: moviePosterUrl,
-                                vote:
-                                    movie![index].voteAverage?.toString() ??
-                                        'N/A',
-                                launchOn:
-                                    movie![index].releaseDate ?? 'Unknown',
-                              ),
-                            ),
-                          );
-                        },
+                         onTap: () => onTap(movie![index]),
+                        // onTap: () {
+                        //   Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //       builder: (context) => DescriptionScreen(
+                        //         name: movieTitle,
+                        //         description: movie![index].overview ??
+                        //             'No description available',
+                        //         bannerUrl:
+                        //             'https://image.tmdb.org/t/p/w500${movie![index].backdropPath}',
+                        //         posterUrl: moviePosterUrl,
+                        //         vote: movie![index].voteAverage?.toString() ??
+                        //             'N/A',
+                        //         launchOn:
+                        //             movie![index].releaseDate ?? 'Unknown',
+                        //             genreIds: movie![index].genreIds,
+                        //       ),
+                        //     ),
+                        //   );
+                        // },
                         child: SizedBox(
                           width: 200,
                           child: Column(
